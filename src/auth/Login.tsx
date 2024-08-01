@@ -1,44 +1,42 @@
 import { message, Form, Input, Button, FormProps } from "antd";
-import { Iusers } from "../InterFace/users"; 
+import { Iusers } from "../InterFace/users";
+import Axios from "../configs/axios";
 import { useMutation } from "@tanstack/react-query";
-import Axios from "../configs/axios"; 
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = Form.useForm();
-    const navigator = useNavigate()
-    const { mutate, isPending } = useMutation({
-        mutationFn: async (credentials: {email:string  , password : string}) => {
+
+    const { mutate,  isPending } = useMutation({
+        mutationFn: async (credentials: { email: string, password: string }) => {
             try {
-                const res = await Axios.post(`login`, credentials); 
+                const res = await Axios.post(`login`, credentials);
                 if (res.data && res.status === 200) {
                     return res;
+                } else {
+                    throw new Error("Invalid credentials");
                 }
             } catch (error) {
                 throw new Error("Lỗi hệ thống");
             }
         },
-
         onSuccess: (data) => {
-            
             localStorage.setItem('users', JSON.stringify(data?.data));
             messageApi.open({
                 type: "success",
-                content: "thành công",
+                content: "Đăng nhập thành công",
             });
             form.resetFields();
-            navigator("/")
         },
         onError: () => {
             messageApi.open({
-                type: "success",
-                content: "that bai",
+                type: "error",
+                content: "Đăng nhập thất bại",
             });
         },
     });
 
-    const onFinish: FormProps<Iusers>["onFinish"] = (values: any) => {
+    const onFinish: FormProps<Iusers>["onFinish"] = (values) => {
         mutate(values);
     };
 
@@ -46,6 +44,7 @@ const Login = () => {
         <div>
             {contextHolder}
             <Form
+                form={form}
                 name="login"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
@@ -57,7 +56,7 @@ const Login = () => {
             >
                 <Form.Item
                     label="Email"
-                    name="username"
+                    name="email"
                     rules={[{ required: true, message: 'Bạn chưa nhập email' }]}
                 >
                     <Input />
@@ -72,7 +71,7 @@ const Login = () => {
                 </Form.Item>
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={isPending}>
                         Đăng nhập
                     </Button>
                 </Form.Item>

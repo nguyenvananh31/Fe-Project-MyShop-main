@@ -1,32 +1,12 @@
 import { message, Form, Input, Button, FormProps } from "antd"
 import { Iusers } from "../InterFace/users";
-import { useMutation } from "@tanstack/react-query";
-import Axios from "../configs/axios";
+
+import { authRegister } from "../services/auth";
 
 const SignIn = () => {
     const [messageApi, contextHolder] = message.useMessage()
     const [form] = Form.useForm();
-    const { mutate, isPending } = useMutation({
-        mutationFn: async (users: Iusers) => {
-            try {
-                const res = await Axios.post(`users`, users)
-                if(res.data && res.status === 201){
-                    return res
-                }
-            } catch (error) {
-                throw new Error("Lỗi hệ thống")
-            }
-        }, onSuccess: (data) => {
-            localStorage.setItem('users', JSON.stringify(data?.data));
-
-            messageApi.success('Đăng ký thành công!');
-
-            form.resetFields();
-        },
-        onError: (error) => {
-            messageApi.error(error.message || 'Đăng ký thất bại!');
-        },
-    });
+    const { mutate, isPending } = authRegister()
     const onFinish: FormProps<Iusers>["onFinish"] = (values: any) => {
         const useData = {
             ...values,
