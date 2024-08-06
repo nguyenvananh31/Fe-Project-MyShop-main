@@ -4,8 +4,9 @@ interface ImovieLinks {
     links: string;
   }
 export interface Imovies {
-    id?: number,
+    id?: number | string,
     name:string,
+    slug:string,
     content:string,
     thumb_url:string[],
     chieurap:boolean,

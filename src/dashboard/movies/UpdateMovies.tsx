@@ -19,7 +19,7 @@ import {
   UploadProps,
 } from "antd";
 import { Imovies } from "../../InterFace/movies";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import Axios from "../../configs/axios";
 import { useEffect, useRef, useState } from "react";
@@ -29,7 +29,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { useUpdateMovie } from "../../services/movies";
+import { useMovieDetail, useUpdateMovie } from "../../services/movies";
 
 
 dayjs().isValid()
@@ -41,17 +41,7 @@ const UpdateMovies = () => {
     queryKey: ["categories"],
     queryFn: () => Axios.get(`/categories`),
   });
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["movie", id],
-    queryFn: async () => {
-      try {
-        return Axios.get(`movies/${id}`);
-      } catch (error) {
-        throw new Error("Không thể hiển thị sản phẩm");
-      }
-    },
-  });
-
+  const { data, isLoading, isError, error } = useMovieDetail(id)
   if (isError) {
     navigator("*");
     return <div>{error.message}</div>;

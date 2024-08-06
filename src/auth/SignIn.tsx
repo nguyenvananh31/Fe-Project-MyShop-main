@@ -12,7 +12,6 @@ const SignIn = () => {
             ...values,
             role:"menter"
         }
-
         mutate(useData)
 
     }
@@ -30,9 +29,22 @@ const SignIn = () => {
                 disabled={isPending}
             >
                 <Form.Item
+                    label="Tên của bạn"
+                    name="name"
+                    rules={[
+                        { required: true, message: 'Bạn chưa nhập Tên' },
+                        {type:"string" , message :"Tên Không hợp lệ"}
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
                     label="Email của bạn"
-                    name="username"
-                    rules={[{ required: true, message: 'Bạn chưa nhập email' }]}
+                    name="email"
+                    rules={[
+                        { required: true, message: 'Bạn chưa nhập email' },
+                        {type:"email" , message :"Email Không hợp lệ"}
+                    ]}
                 >
                     <Input />
                 </Form.Item>

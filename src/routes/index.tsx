@@ -6,9 +6,9 @@ import MoviesDashboard from "../dashboard/movies/moviesDashboard"
 import NotFound from "../website/NotFound";
 import UpdateMovies from "../dashboard/movies/UpdateMovies";
 import CreateMovie from "../dashboard/movies/CreateMovie";
-import PrivateRoute from "./Privaterouter";
 import SignIn from "../auth/SignIn";
 import Login from "../auth/Login";
+import DetailMovie from "../views/DetailMovie";
 
 const Router = () => {
   return (
@@ -16,10 +16,12 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<LayoutWebsite />} >
           <Route index element={<HomePage />} />
+          <Route path="/phim/:slug/:id" element={<DetailMovie />} />
         </Route>
-        <Route path="admin" element={<PrivateRoute>
+        <Route path="admin" element={
+        
             <LayoutAdmin />
-          </PrivateRoute>}>
+          }>
           <Route index element={<MoviesDashboard />} />
           <Route path="update-movies/:id" element={<UpdateMovies />} />
           <Route path="create-movie" element={<CreateMovie />} />

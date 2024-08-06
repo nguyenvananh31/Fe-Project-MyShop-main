@@ -29,7 +29,13 @@ const Login = () => {
                 <Form.Item
                     label="Email"
                     name="email"
-                    rules={[{ required: true, message: 'Bạn chưa nhập email' }]}
+                    rules={[
+                        { required: true, message: 'Bạn chưa nhập email' },
+                        {
+                            type: "email",
+                            message: 'Email không h��p lệ'
+                        }
+                    ]}
                 >
                     <Input />
                 </Form.Item>

@@ -16,7 +16,7 @@ export const useMoviesList = () => {
     });
 };
 
-export const useMovieDetail = (id: number | null) => {
+export const useMovieDetail = (id: number ) => {
     return useQuery({
         queryKey: ["movies", id],
         queryFn: async () => {
